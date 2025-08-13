@@ -20,9 +20,7 @@ export const App = () => {
     const [isMoreClicked, setIsMoreClicked] = useState(false);
     const [value, setValue] = useState("");
     const [isError, setIsError] = useState(false);
-    const [label, setLabel] = useState(
-        "Хочу покорить Эверест через год. Поможешь?",
-    );
+    const [label, setLabel] = useState("Хочу покорить Эверест через год.");
 
     const submit = () => {
         // window.gtag("event", "5990_activate_2");
