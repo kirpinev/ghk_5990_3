@@ -20,6 +20,9 @@ export const App = () => {
     const [isMoreClicked, setIsMoreClicked] = useState(false);
     const [value, setValue] = useState("");
     const [isError, setIsError] = useState(false);
+    const [label, setLabel] = useState(
+        "Хочу покорить Эверест через год. Поможешь?",
+    );
 
     const submit = () => {
         // window.gtag("event", "5990_activate_2");
@@ -222,7 +225,15 @@ export const App = () => {
 
                         setValue(input.value);
                     }}
-                    label="Хочу покорить Эверест через год. Поможешь?"
+                    onClick={() => setLabel("")}
+                    onBlur={() => {
+                        if (value.length !== 0) {
+                            setLabel("");
+                        } else {
+                            setLabel("Хочу покорить Эверест через год. Поможешь?");
+                        }
+                    }}
+                    label={label}
                     block={true}
                     minRows={10}
                     maxLength={500}
