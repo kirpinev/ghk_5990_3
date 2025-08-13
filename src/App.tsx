@@ -14,6 +14,7 @@ import { FormEvent, useState } from "react";
 import { BottomSheet } from "@alfalab/core-components/bottom-sheet";
 import { ThxLayout } from "./thx/ThxLayout.tsx";
 import { Textarea } from "@alfalab/core-components/textarea";
+import { sendDataToGA } from "./utils/events.ts";
 
 export const App = () => {
     const [thxShow, setThx] = useState(LS.getItem(LSKeys.ShowThx, false));
@@ -21,12 +22,16 @@ export const App = () => {
     const [value, setValue] = useState("");
     const [isError, setIsError] = useState(false);
     const [label, setLabel] = useState("Хочу покорить Эверест через год.");
+    const [loading, setLoading] = useState(false);
 
     const submit = () => {
-        // window.gtag("event", "5990_activate_2");
+        setLoading(true);
 
-        LS.setItem(LSKeys.ShowThx, true);
-        setThx(true);
+        sendDataToGA({ description: value }).then(() => {
+            setLoading(false);
+            LS.setItem(LSKeys.ShowThx, true);
+            setThx(true);
+        });
     };
 
     if (thxShow) {
@@ -177,7 +182,12 @@ export const App = () => {
                     block
                     view="primary"
                     href=""
-                    onClick={() => setIsMoreClicked(true)}
+                    onClick={() => {
+                        setIsMoreClicked(true);
+                        window.gtag("event", "5990_goal_click", {
+                            variant_name: "ghk_5990_3",
+                        });
+                    }}
                 >
                     Поставить цель
                 </ButtonMobile>
@@ -189,6 +199,7 @@ export const App = () => {
                 actionButton={
                     <ButtonMobile
                         block
+                        loading={loading}
                         view="primary"
                         href=""
                         onClick={() => {
